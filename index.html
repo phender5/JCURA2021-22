@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Code Editor</title>
+    <script src="codemirror/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="codemirror/lib/codemirror.css">
+    <script src="codemirror/mode/xml/xml.js"></script>
+    <script src="codemirror/addon/edit/closetag.js"></script>
+    <script src="app.js"></script>
+    <link rel="stylesheet" href="codemirror/theme/xq-light.css">
+    <link rel="stylesheet" href="main.css">
+    <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.0/dist/svg.min.js"></script>
+
+</head>
+<body class="body">
+    
+    <div id="create">
+        
+    <textarea id="editor" class="textarea">
+        <h1>Enter your title here!</h1>
+        <p>new line</p>
+        <p>Testing to make sure the svg is behind: sadhfsahfkljsdhfjaklhfdjskahfdlsajhflaskjfhdlskajfhasjkfhakdfsjlkakdjfsjdfjas;lfkjasdfkldfhaskldjfhasklhfj</p>
+        <h3>New subject header:</h3>
+        <p>yada yada yada</p>
+    </textarea>
+    <!--<img src="smile.svg" alt="a smile face"> -->
+    <script>
+        
+        var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
+            mode: "xml",
+            theme: "xq-light",
+            lineNumbers: true,
+            autoCloseTags: true
+        });
+        editor.setSize("100%", "500");
+    </script>
+    <svg id="svg" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300">
+        <rect width="100" height="100" fill="#f06"></rect>
+      </svg>
+    </div>
+
+</body>

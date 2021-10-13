@@ -1,0 +1,19 @@
+img {
+    width: 100px;
+    float: right;
+    display: block;
+}
+.body {
+    background-image: url(./smile.svg);
+    background-repeat: repeat-y;
+    background-position-x: 90%;
+    background-position-y: 10%;
+    background-size: 100px;
+    opacity: 0.8;
+}
+
+#svg {
+    z-index: -1 !important;
+    opacity: .6;
+    position: top right;
+}
