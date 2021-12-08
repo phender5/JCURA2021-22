@@ -26,7 +26,8 @@
 
 .CodeMirror-gutters {
   border-right: 1px solid #ddd;
-  background-color: #f7f7f7;
+  /*originally white*/
+  background-color: transparent;
   white-space: nowrap;
 }
 .CodeMirror-linenumbers {}
@@ -158,8 +159,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #a22;}
 .CodeMirror {
   position: relative;
   overflow: hidden;
-  background: white;
-  background-image: "smile.svg";
+  background: transparent;
 }
 
 .CodeMirror-scroll {
