@@ -21,29 +21,37 @@
     </textarea>
     <script>
         var lc_curr = 0;
+        var prevchar = 0;
         var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
             mode: "xml",
             theme: "xq-light",
             lineNumbers: true,
-            autoCloseTags: true
-
+            autoCloseTags: true,
             
         });
-        // editor.on("change", function(){
-        //     generate(event)
-        // });
-        // editor.on("viewportChange", {"from":8}, {"to":24}, function(instance, e) {
-        //     var tname = document.getElementById('create').id;
-        //     alert(tname);
-        // });
+        
+        editor.on("load", () => {
+            editor.setCursor({line:0, ch:0});
+        });
+    
         editor.on("changes", () => {
             lc = editor.lineCount();
-            if (lc > lc_curr) {
-                generate(event);
+            ln = editor.getCursor().line;
+            lchar = editor.getCursor().ch;
+            ht_at_ln = editor.heightAtLine(ln-1);
+            lnht = editor.defaultTextHeight()
+
+            //console.log("LINE: ", ln);
+            console.log("CHARS: ", lchar);
+            //console.log("HANDLE: ", editor.getLineHandle(ln));
+            console.log("HEIGHT PX: ", ht_at_ln);
+            if (lc >= lc_curr) {
+                generate(event, Number(ln), Number(ht_at_ln), Number(lnht), Number(prevchar));
             } else if (lc < lc_curr) {
-                rmv_svg();
+                rmv_svg(Number(ln), Number(ht_at_ln), Number(lnht), Number(lc_curr), Number(lc));
             }
             lc_curr = lc;
+            prevchar = lchar
         });
 
     </script>
