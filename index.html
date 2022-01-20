@@ -31,7 +31,17 @@
         });
         
         editor.on("load", () => {
+            console.log("We have loaded!!");
             editor.setCursor({line:0, ch:0});
+        });
+
+        editor.on("cursorActivity", () => {
+            lnchng = editor.getCursor().line;
+            console.log("CURRENT CURSOR POS: ", lnchng);
+        });
+
+        editor.on("scroll", () => {
+            console.log("Scrolled :) ");
         });
     
         editor.on("changes", () => {
@@ -41,14 +51,19 @@
             ht_at_ln = editor.heightAtLine(ln-1);
             lnht = editor.defaultTextHeight()
 
+
             //console.log("LINE: ", ln);
             console.log("CHARS: ", lchar);
             //console.log("HANDLE: ", editor.getLineHandle(ln));
             console.log("HEIGHT PX: ", ht_at_ln);
             if (lc >= lc_curr) {
+                //function generate(event, index, pos, sz, chars)
                 generate(event, Number(ln), Number(ht_at_ln), Number(lnht), Number(prevchar));
             } else if (lc < lc_curr) {
-                rmv_svg(Number(ln), Number(ht_at_ln), Number(lnht), Number(lc_curr), Number(lc));
+                //function rmv_svg(index, pos, sz, curr, next)
+                var changeAmount = lc_curr - lc
+                console.log("DELETED LINE: ", Number(lnchng));
+                rmv_svg(Number(lc), Number(lnht), Number(changeAmount), Number(lnchng));
             }
             lc_curr = lc;
             prevchar = lchar
