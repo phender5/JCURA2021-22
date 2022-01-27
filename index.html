@@ -57,7 +57,7 @@
             lnht = editor.defaultTextHeight()
 
 
-            //console.log("LINE: ", ln);
+            console.log("LINE CNT: ", lc);
             console.log("CHARS: ", lchar);
             //console.log("HANDLE: ", editor.getLineHandle(ln));
             console.log("HEIGHT PX: ", ht_at_ln);
@@ -69,6 +69,9 @@
                 var changeAmount = lc_curr - lc
                 console.log("DELETED LINE: ", Number(lnchng));
                 rmv_svg(Number(ht_at_ln), Number(lnht), Number(changeAmount), Number(lnchng));
+            } 
+            if (lc==1 && prevchar == 1) {
+                clearDoc();
             }
             lc_curr = lc;
             prevchar = lchar

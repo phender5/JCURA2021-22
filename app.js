@@ -55,7 +55,7 @@ function rmv_svg(pos, sz, chamt, curr) {
     tempIndex = curr + sizeVar
     draw.each(function(i, children) {
         //console.log("CURR in loop:", curr);
-        if ((this.cy()==tempIndex || curr==12) && countDown>0) {
+        if ((this.cy()==tempIndex) && countDown>0) {
             this.remove();
             tempIndex += sizeVar
             countDown -= 1
@@ -76,6 +76,12 @@ function rmv_svg(pos, sz, chamt, curr) {
         } 
     });
 } 
+
+function clearDoc() {
+    draw.each(function(i, children) {
+        this.remove();
+    });
+}
     
     //scroll info top: 
     // amount = current - prev
