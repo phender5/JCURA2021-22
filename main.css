@@ -16,4 +16,5 @@ img {
     z-index: -1 !important;
     opacity: .6;
     position: top right;
+    background-attachment: local;
 }
