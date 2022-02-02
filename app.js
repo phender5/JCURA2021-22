@@ -1,6 +1,9 @@
 var draw = SVG()
 var rect 
 var counter = 0;
+var svgArray = ["airplane-svgrepo-com","rainbow-svgrepo-com","boat-svgrepo-com","fish-svgrepo-com"]
+var svgArrIndex = 0
+
 moveX = 0
 moveY = 0
 sizeVar = 20
@@ -25,6 +28,7 @@ function generate(event, posIn, sz, chars) {
         //draw = SVG().addTo('#create').size(1000,1000)
         draw = SVG().addTo('#create').size('100%','100%')
         counter += 2;
+        
     }
     sizeVar = sz
     var kc = event.keyCode;
@@ -32,14 +36,14 @@ function generate(event, posIn, sz, chars) {
     if (kc == 13) {
         console.log("POS ON ENTER:", pos);
         if(chars) {
-            var rect = draw.rect(sizeVar, sizeVar).attr({ fill: setBg() }).x(moveX).y((pos-(sizeVar/2)))
+            //var rect = draw.rect(sizeVar, sizeVar).attr({ fill: setBg() }).x(moveX).y((pos-(sizeVar/2)))
+            var image = draw.image(`/Users/paulhenderson/JCURA/code-mirror-test/JCURA2021-22/svg_repo/${svgArray[svgArrIndex]}.svg`).size(20,20).y((pos-sizeVar));
+            svgArrIndex = (svgArrIndex + 1) % 4
             counter += 1;
         } else {
             var rect = draw.rect(sizeVar, sizeVar).attr({ fill: 'transparent' }).x(moveX).y((pos-(sizeVar/2)))
+            //var rect = draw.image(`/Users/paulhenderson/JCURA/code-mirror-test/JCURA2021-22/svg_repo/${boat}.svg`).attr({ fill: 'transparent' }).size(20,20).x(moveX).y((pos-(sizeVar)));
         }
-
-        //rect.on('click', click)
-        //index += 1
         draw.each(function(i, children) {
             if (this.cy()>pos) {
                 this.dy(sizeVar);
@@ -52,24 +56,15 @@ function generate(event, posIn, sz, chars) {
 function rmv_svg(pos, sz, chamt, curr) { 
     sizeVar = sz
     countDown = chamt
-    tempIndex = curr + sizeVar
+    tempIndex = curr
     draw.each(function(i, children) {
         //console.log("CURR in loop:", curr);
-        if ((this.cy()==tempIndex) && countDown>0) {
+        if ((this.y()==tempIndex) && countDown>0) {
             this.remove();
             tempIndex += sizeVar
             countDown -= 1
         } 
     });
-    console.log("SHOW ME RMV POS: ", pos);
-    // for(let i=0; i<(chamt); i++) {
-    //     console.log("CHANGE", chamt);
-    //     if (draw.get(tempIndex)) {
-    //         draw.get(tempIndex).remove()
-    //         tempIndex += 1
-    //     }
-  
-    // }
     draw.each(function(i, children) {
         if (this.cy()>(pos+sizeVar)) {
             this.dy(-sizeVar*(chamt));
@@ -93,3 +88,8 @@ function moveOnScroll(currPos, prevPos) {
         this.dy(moveSize);
     });
 }
+
+// make highlighter transparent
+// edge cases (scroll instance, last element)
+// make editor the full window
+// BONUS: library of svg's drawn in a cycle

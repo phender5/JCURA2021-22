@@ -1,6 +1,13 @@
-body {
-    background-color: white;
-    position: relative;
+html, body {
+  margin:0 5 0 0;
+  height:100%;
+  background-color: white;
+  position: relative;
+}
+
+.CodeMirror {
+  border: 1px solid #eee;
+  height: 100%;
 }
 
 #editor {
@@ -10,9 +17,9 @@ body {
   }
 
 #create {
-    top: 0;
+    top: 10px;
     right: 0;
-    width: 90%;
+    width: 60%;
     float: right;
     height: 100%;
     position: absolute;
