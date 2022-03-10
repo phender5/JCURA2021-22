@@ -4,6 +4,8 @@ var counter = 0;
 var svgArray = ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"]
 var svgArrIndex = 0
 var svgObj = {}
+var drawCount = 0
+var drawSwitch = 2
 
 moveX = 0
 moveY = 0
@@ -37,6 +39,7 @@ function chooseSVG(pos) {
         var min = Math.min.apply(null, Object.values(svgObj));
         var max = Math.max.apply(null, Object.values(svgObj));
         console.log("MIN&MAX", min, max);
+        //console.log("OBJ: ", svgObj);
         if (pos>max) {
             for(i=0; i<Object.values(svgObj).length; i+=1) {
                 if(Object.values(svgObj)[i]==max) {
@@ -70,7 +73,7 @@ function chooseSVG(pos) {
             svgObj[resIndex] = pos
             return resIndex
         } else {
-            sortedInds = Object.values(svgObj).sort()
+            sortedInds = Object.values(svgObj).sort((a,b)=>a-b)
             console.log("SORTED :)))", sortedInds);
             for (i = 0; i < sortedInds.length-1; i++) {
                 if (pos >= sortedInds[i] && pos <= sortedInds[i + 1]) {
@@ -104,14 +107,24 @@ function generate(event, posIn, sz, chars) {
             if (this.cy()>=pos-20) {
                 this.dy(sizeVar);
             } 
-        });   
-        if(chars) {
-            //var chosenSVG = chooseSVG(pos);
-            //var image = draw.image(`/Users/paulhenderson/JCURA/code-mirror-test/JCURA2021-22/svg_repo/${svgArray[chosenSVG]}.svg`).size(20,20).cy((pos-sizeVar));
-            var image = draw.image(`/Users/paulhenderson/JCURA/code-mirror-test/JCURA2021-22/svg_repo/${svgArray[svgArrIndex]}.svg`).size(20,20).cy((pos-sizeVar));
+        });
+        //Object.entries(svgObj).forEach(([key, val]) => (svgObj[key] = val+sizeVar));
+        for(i=0; i<Object.values(svgObj).length; i+=1) {
+            if(Object.values(svgObj)[i]>=pos) {
+                Object.values(svgObj)[i] += sizeVar;
+            }
+        }   
+        if(chars && (drawCount%drawSwitch==0)) {
+            var chosenSVG = chooseSVG(pos);
+            var image = draw.image(`/Users/paulhenderson/JCURA/code-mirror-test/JCURA2021-22/svg_repo/${svgArray[chosenSVG]}.svg`).size(20,20).cy((pos-sizeVar));
+            //var image = draw.image(`/Users/paulhenderson/JCURA/code-mirror-test/JCURA2021-22/svg_repo/${svgArray[svgArrIndex]}.svg`).size(20,20).cy((pos-sizeVar));
 
             svgArrIndex = (svgArrIndex + 1) % 31
             counter += 1;
+            drawCount += 1;
+        } else if (chars && (drawCount%drawSwitch != 0)) {
+            var rect = draw.rect(sizeVar, sizeVar).attr({ fill: 'transparent' }).x(moveX).cy((pos-sizeVar))
+            drawCount += 1;
         } else {
             var rect = draw.rect(sizeVar, sizeVar).attr({ fill: 'transparent' }).x(moveX).cy((pos-sizeVar))
             
@@ -127,9 +140,16 @@ function rmv_svg(pos, sz, chamt, curr) {
     countDown = chamt
     tempIndex = curr
     draw.each(function(i, children) {
-        //console.log("CURR in loop:", curr);
-        if ((this.y()==tempIndex) && countDown>0) {
-            this.remove();
+        console.log("CURR in loop:", curr, "=?=", this.cy());
+        if (this.cy()>(tempIndex) && countDown>0) {
+            for(i=0; i<Object.values(svgObj).length; i+=1) {
+                if(Math.abs(Object.values(svgObj)[i]-this.cy())<10) {
+                    const foundkey = Object.keys(svgObj).find(foundkey => svgObj[foundkey] === Object.values(svgObj)[i]);
+                    console.log("CAN DELETE!!!!", foundkey)
+                    delete svgObj[foundkey];
+                }
+            }  
+            this.remove(); 
             tempIndex += sizeVar
             countDown -= 1
         } 
@@ -139,6 +159,13 @@ function rmv_svg(pos, sz, chamt, curr) {
             this.dy(-sizeVar*(chamt));
         } 
     });
+    //Object.entries(svgObj).forEach(([key, val]) => (svgObj[key] = val-sizeVar)); 
+    for(i=0; i<Object.values(svgObj).length; i+=1) {
+        if(Object.values(svgObj)[i]>=pos) {
+            Object.values(svgObj)[i] -= sizeVar;
+        }
+    }   
+    console.log("OBJ REM:", svgObj); 
 } 
 
 function clearDoc() {
@@ -152,6 +179,10 @@ function moveOnScroll(currPos, prevPos) {
     draw.each(function(i, children) {
         this.dy(moveSize);
     });
+    for(i=0; i<Object.values(svgObj).length; i+=1) {  
+        Object.values(svgObj)[i] += moveSize;
+    }
+    console.log("moved obj: ", svgObj);   
 }
 
 // make highlighter transparent
