@@ -5,7 +5,7 @@ var svgArray = ["01","02","03","04","05","06","07","08","09","10","11","12","13"
 var svgArrIndex = 0
 var svgObj = {}
 var drawCount = 0
-var drawSwitch = 2
+var drawSwitch = 3
 
 moveX = 0
 moveY = 0
@@ -194,3 +194,5 @@ function moveOnScroll(currPos, prevPos) {
 // 2   same svg means smaller and multiple svgs
 
 // 3 Wrap up a version (aka notes/commentss/prepare for summer)
+
+// Copy and paste functionality
